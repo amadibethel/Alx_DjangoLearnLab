@@ -10,3 +10,4 @@ book = Book.objects.get(id=1)
 # Filter books by author
 books_by_author = Book.objects.filter(author="F. Scott Fitzgerald")
 
+1984
