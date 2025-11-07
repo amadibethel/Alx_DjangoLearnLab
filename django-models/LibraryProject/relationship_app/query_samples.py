@@ -36,3 +36,5 @@ def get_librarian_for_library(library_name):
     except (Library.DoesNotExist, Librarian.DoesNotExist):
         return None
 
+"Librarian.objects.get(library="
+
