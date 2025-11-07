@@ -5,8 +5,8 @@ urlpatterns = [
     # ------------------------------
     # Book and Library Views
     # ------------------------------
-    path('books/', views.list_books, name='list_books'),  # Function-based view
-    path('library/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),  # Class-based view
+    path('books/', views.list_books, name='list_books'),
+    path('library/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),
 
     # ------------------------------
     # Authentication Views
@@ -23,9 +23,9 @@ urlpatterns = [
     path('member-view/', views.member_view, name='member_view'),
 
     # ------------------------------
-    # Book CRUD Views with Permissions
+    # Book CRUD Views (Permission Protected)
     # ------------------------------
-    path('books/add/', views.add_book_view, name='add_book'),
-    path('books/edit/<int:pk>/', views.edit_book_view, name='edit_book'),
-    path('books/delete/<int:pk>/', views.delete_book_view, name='delete_book'),
+    path('add_book/', views.add_book_view, name='add_book'),
+    path('edit_book/<int:pk>/', views.edit_book_view, name='edit_book'),
+    path('delete_book/<int:pk>/', views.delete_book_view, name='delete_book'),
 ]
