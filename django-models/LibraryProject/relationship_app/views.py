@@ -2,10 +2,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.views.generic import DetailView
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test, permission_required
 from .models import Book, Library  # Explicit import for Library
+from .models import Library
 from .forms import BookForm  # Ensure BookForm exists
 
 # ------------------------------
