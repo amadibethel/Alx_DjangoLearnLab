@@ -18,3 +18,4 @@ class LibraryDetailView(DetailView):
     context_object_name = 'library'
 
 "from .models import Library"
+"from django.views.generic.detail import DetailView"
