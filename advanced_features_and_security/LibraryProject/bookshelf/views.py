@@ -7,6 +7,8 @@ from django.contrib.auth import login, logout
 from django.contrib import messages
 from .models import Book, Library
 from .forms import BookForm
+from .forms import BookForm, ExampleForm
+
 
 # ------------------------------
 # Authentication Views
@@ -39,6 +41,19 @@ def logout_view(request):
     logout(request)
     messages.info(request, "You have been logged out.")
     return render(request, 'bookshelf/logout.html')
+
+def form_example_view(request):
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            # Example: process form data (e.g., print or save)
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            # just show a success message
+            return render(request, 'bookshelf/form_example.html', {'form': form, 'success': True})
+    else:
+        form = ExampleForm()
+    return render(request, 'bookshelf/form_example.html', {'form': form})
 
 # ------------------------------
 # List all books (checker expects "book_list")
