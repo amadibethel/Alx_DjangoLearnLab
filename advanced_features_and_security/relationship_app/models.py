@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -38,14 +37,15 @@ class CustomUser(AbstractUser):
     date_of_birth = models.DateField(null=True, blank=True)
     profile_photo = models.ImageField(upload_to='profile_photos/', blank=True, null=True)
 
+    # Prevent clashes with default User model relations
     groups = models.ManyToManyField(
         'auth.Group',
-        related_name='customuser_set',   # prevents clash with auth.User.groups
+        related_name='customuser_set',
         blank=True
     )
     user_permissions = models.ManyToManyField(
         'auth.Permission',
-        related_name='customuser_permissions_set',  # prevents clash with auth.User.user_permissions
+        related_name='customuser_permissions_set',
         blank=True
     )
 
@@ -53,7 +53,6 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
-
 
 
 # -----------------------------------
@@ -72,9 +71,10 @@ class Book(models.Model):
 
     class Meta:
         permissions = (
-            ("can_add_book", "Can add book"),
-            ("can_change_book", "Can change book"),
-            ("can_delete_book", "Can delete book"),
+            ("can_view", "Can view book"),
+            ("can_create", "Can create book"),
+            ("can_edit", "Can edit book"),
+            ("can_delete", "Can delete book"),
         )
 
     def __str__(self):
@@ -113,7 +113,9 @@ class UserProfile(models.Model):
         return f"{self.user.username} ({self.role})"
 
 
-# Signal to automatically create UserProfile when a User is created
+# -----------------------------------
+# Signal to automatically create UserProfile
+# -----------------------------------
 @receiver(post_save, sender=CustomUser)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:

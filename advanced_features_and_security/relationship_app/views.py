@@ -1,15 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
-from django.views.generic import DetailView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import user_passes_test, permission_required
 from django.contrib.auth import login, logout
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test, permission_required
-from .models import Book, Library  # Explicit import for Library
-from .models import Library
-from .forms import BookForm  # Ensure BookForm exists
+from .models import Book, Library
+from .forms import BookForm
 
 # ------------------------------
 # Function-based view: List all books
@@ -88,7 +84,7 @@ def member_view(request):
 # ------------------------------
 # Book CRUD Views with Permissions
 # ------------------------------
-@permission_required('relationship_app.can_add_book', raise_exception=True)
+@permission_required('relationship_app.can_create', raise_exception=True)
 def add_book_view(request):
     if request.method == 'POST':
         form = BookForm(request.POST)
@@ -99,7 +95,7 @@ def add_book_view(request):
         form = BookForm()
     return render(request, 'relationship_app/add_book.html', {'form': form})
 
-@permission_required('relationship_app.can_change_book', raise_exception=True)
+@permission_required('relationship_app.can_edit', raise_exception=True)
 def edit_book_view(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
@@ -111,7 +107,7 @@ def edit_book_view(request, pk):
         form = BookForm(instance=book)
     return render(request, 'relationship_app/edit_book.html', {'form': form, 'book': book})
 
-@permission_required('relationship_app.can_delete_book', raise_exception=True)
+@permission_required('relationship_app.can_delete', raise_exception=True)
 def delete_book_view(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
