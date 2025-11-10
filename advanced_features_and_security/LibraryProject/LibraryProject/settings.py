@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'relationship_app',
     'bookshelf',  # your bookshelf app
     'csp',  # added for Content Security Policy
@@ -158,6 +159,39 @@ if not DEBUG:
 # ------------------------------
 # Content Security Policy (CSP)
 # ------------------------------
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", 'https://cdnjs.cloudflare.com')
+CSP_STYLE_SRC = ("'self'", 'https://cdnjs.cloudflare.com')
+CSP_IMG_SRC = ("'self'", 'data:')
+
+# SECURITY SETTINGS - HTTPS & Secure Headers
+# ------------------------------------------
+
+# Redirect all HTTP requests to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Include all subdomains
+SECURE_HSTS_PRELOAD = True  # Enable browser preload list
+
+# Secure Cookies
+SESSION_COOKIE_SECURE = True  # Send session cookie over HTTPS only
+CSRF_COOKIE_SECURE = True     # Send CSRF cookie over HTTPS only
+
+SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access to session cookie
+CSRF_COOKIE_HTTPONLY = True     # Optional, adds extra security
+
+# Secure Headers
+X_FRAME_OPTIONS = 'DENY'               # Protect against clickjacking
+SECURE_CONTENT_TYPE_NOSNIFF = True     # Prevent content-type sniffing
+SECURE_BROWSER_XSS_FILTER = True       # Enable XSS protection in the browser
+
+# Content Security Policy (CSP) - Optional but recommended
+INSTALLED_APPS += ['csp']  # Make sure django-csp is installed
+
+MIDDLEWARE = ['csp.middleware.CSPMiddleware'] + MIDDLEWARE
+
 CSP_DEFAULT_SRC = ("'self'",)
 CSP_SCRIPT_SRC = ("'self'", 'https://cdnjs.cloudflare.com')
 CSP_STYLE_SRC = ("'self'", 'https://cdnjs.cloudflare.com')
