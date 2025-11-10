@@ -108,7 +108,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # ------------------------------
 # Custom User Model
 # ------------------------------
-AUTH_USER_MODEL = 'relationship_app.CustomUser'
+AUTH_USER_MODEL = 'bookshelf.CustomUser'
 
 # ------------------------------
 # Authentication Redirects
