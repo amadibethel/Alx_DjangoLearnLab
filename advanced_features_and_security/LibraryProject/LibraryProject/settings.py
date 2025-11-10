@@ -196,3 +196,10 @@ CSP_DEFAULT_SRC = ("'self'",)
 CSP_SCRIPT_SRC = ("'self'", 'https://cdnjs.cloudflare.com')
 CSP_STYLE_SRC = ("'self'", 'https://cdnjs.cloudflare.com')
 CSP_IMG_SRC = ("'self'", 'data:')
+
+# ------------------------------
+# Security Settings for Proxy / SSL
+# ------------------------------
+
+# Tell Django to trust the X-Forwarded-Proto header for HTTPS detection
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
