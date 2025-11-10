@@ -7,11 +7,19 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ------------------------------
-# Security Settings
+# Security Key
 # ------------------------------
-SECRET_KEY = 'django-insecure-your-secret-key-here'  # Replace in production
-DEBUG = True
-ALLOWED_HOSTS = []
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-your-secret-key-here')
+
+# ------------------------------
+# Debug Mode
+# ------------------------------
+DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
+
+# ------------------------------
+# Allowed Hosts
+# ------------------------------
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'yourdomain.com']
 
 # ------------------------------
 # Installed Apps
@@ -23,7 +31,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'relationship_app',  # Your main app
+    'relationship_app',
+    'bookshelf',  # your bookshelf app
+    'csp',  # added for Content Security Policy
 ]
 
 # ------------------------------
@@ -31,6 +41,7 @@ INSTALLED_APPS = [
 # ------------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'csp.middleware.CSPMiddleware',  # Must be near top for CSP enforcement
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -50,7 +61,7 @@ ROOT_URLCONF = 'LibraryProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # global templates directory
+        'DIRS': [BASE_DIR / 'templates'],  # Global template directory
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -64,12 +75,12 @@ TEMPLATES = [
 ]
 
 # ------------------------------
-# WSGI
+# WSGI Application
 # ------------------------------
 WSGI_APPLICATION = 'LibraryProject.wsgi.application'
 
 # ------------------------------
-# Database (Default: SQLite)
+# Database
 # ------------------------------
 DATABASES = {
     'default': {
@@ -101,7 +112,6 @@ USE_TZ = True
 # ------------------------------
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -121,3 +131,34 @@ LOGIN_URL = 'login'
 # Default Primary Key Field Type
 # ------------------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ------------------------------
+# Security Configurations (Production)
+# ------------------------------
+if not DEBUG:
+    # Browser protections
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
+
+    # HTTPS cookie settings
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_HTTPONLY = True
+
+    # HSTS (HTTP Strict Transport Security)
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
+    # SSL redirect
+    SECURE_SSL_REDIRECT = True
+
+# ------------------------------
+# Content Security Policy (CSP)
+# ------------------------------
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", 'https://cdnjs.cloudflare.com')
+CSP_STYLE_SRC = ("'self'", 'https://cdnjs.cloudflare.com')
+CSP_IMG_SRC = ("'self'", 'data:')
