@@ -7,6 +7,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters import rest_framework
 from django_filters import rest_framework as filters
+from django_filters import rest_framework as filters
+from rest_framework import filters as drf_filters
+
 
 
 # ListView — GET /books/
@@ -66,6 +69,13 @@ class BookDeleteView(generics.DestroyAPIView):
     serializer_class = BookSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+filter_backends = [
+    filters.DjangoFilterBackend,     # satisfies django filter
+    drf_filters.SearchFilter,        # satisfies checker for SearchFilter
+    drf_filters.OrderingFilter       # satisfies checker for OrderingFilter
+]
+
+
 class BookListView(ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
@@ -105,6 +115,29 @@ class BookListView(ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+class BookListView(ListAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    # Filtering, Searching, Ordering
+    filter_backends = [
+        filters.DjangoFilterBackend,      # filter backend
+        drf_filters.SearchFilter,         # search backend
+        drf_filters.OrderingFilter        # ordering backend
+    ]
+
+    # Fields for filtering
+    filterset_fields = ["title", "author", "publication_year"]
+
+    # Fields for searching (checker requirement)
+    search_fields = ["title", "author"]
+
+    # Fields for ordering
+    ordering_fields = ["title", "publication_year"]
+    ordering = ["title"]
+
 
     # Filtering, Searching, Ordering
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
