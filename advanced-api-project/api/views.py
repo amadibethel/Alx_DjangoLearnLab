@@ -5,6 +5,8 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters import rest_framework
+from django_filters import rest_framework as filters
 
 
 # ListView — GET /books/
@@ -98,3 +100,21 @@ class BookUpdateView(UpdateAPIView):
 class BookDeleteView(DestroyAPIView):
     queryset = Book.objects.all()
     permission_classes = [IsAuthenticated]   # Protected route
+
+class BookListView(ListAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    # Filtering, Searching, Ordering
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+
+    # Filtering fields
+    filterset_fields = ["title", "author", "publication_year"]
+
+    # Search fields
+    search_fields = ["title", "author"]
+
+    # Ordering fields
+    ordering_fields = ["title", "publication_year"]
+    ordering = ["title"]
