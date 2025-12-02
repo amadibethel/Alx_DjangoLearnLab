@@ -23,6 +23,7 @@ ALLOWED_HOSTS = []
 # -------------------------------------------------------------
 INSTALLED_APPS = [
     # Django default apps
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -31,7 +32,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Project apps
+
     'blog',
+    'taggit',
 ]
 
 
