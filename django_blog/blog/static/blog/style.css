@@ -1,0 +1,5 @@
+body { font-family: Arial, sans-serif; margin: 20px; }
+nav a { margin-right: 10px; }
+.messages li { list-style: none; padding: 4px; margin: 4px 0; }
+.messages li.success { background: #d4edda; }
+.messages li.danger { background: #f8d7da; }
