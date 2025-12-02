@@ -53,3 +53,10 @@
   </section>
 {% endblock %}
 
+{% if post.tags.all %}
+  <p>Tags:
+    {% for tag in post.tags.all %}
+      <a href="{% url 'blog:posts_by_tag' tag_name=tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+  </p>
+{% endif %}
