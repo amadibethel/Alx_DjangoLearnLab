@@ -334,3 +334,15 @@ urlpatterns = [
     path('tags/<str:tag_name>/', views.PostsByTagView.as_view(), name='posts_by_tag'),
     path('search/', views.SearchResultsView.as_view(), name='search_results'),
 ]
+
+def post_list(request):
+    query = request.GET.get('q')
+    posts = Post.objects.all()
+
+    if query:
+        posts = posts.filter(
+            Q(title__icontains=query) |
+            Q(body__icontains=query)
+        )
+    
+    return render(request, 'blog/post_list.html', {'posts': posts}
