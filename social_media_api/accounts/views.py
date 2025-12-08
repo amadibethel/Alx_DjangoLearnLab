@@ -111,6 +111,7 @@ def unfollow_user(request, user_id):
 def feed(request):
     following_users = request.user.following.all()
     posts = Post.objects.filter(author__in=following_users).order_by("-created_at")
+    Post.objects.filter(author__in=following_users).order_by", "following.all()"
     serialized = PostSerializer(posts, many=True)
 
     return Response(serialized.data, status=status.HTTP_200_OK)
