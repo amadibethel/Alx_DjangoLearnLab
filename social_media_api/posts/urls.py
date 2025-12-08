@@ -6,6 +6,7 @@ from rest_framework.routers import DefaultRouter
 from .views import PostViewSet, CommentViewSet
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import LikePostView, UnlikePostView
 
 router = DefaultRouter()
 router.register(r'posts', PostViewSet, basename='post')
@@ -18,6 +19,8 @@ urlpatterns = [
     path('api/', include('posts.urls')),
     path('feed/', FeedView.as_view(), name='feed'),
     path('posts/', include('posts.urls'))
+    path('<int:pk>/like/', LikePostView.as_view(), name='post-like'),
+    path('<int:pk>/unlike/', UnlikePostView.as_view(), name='post-unlike'),
 ]
 
 if settings.DEBUG:

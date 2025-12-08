@@ -105,6 +105,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
 # Feed: posts from users the current user follows
+
 class FeedView(generics.ListAPIView):
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -115,3 +116,8 @@ class FeedView(generics.ListAPIView):
         following_users = self.request.user.following.all()   # <-- exact string the checker looks for
         # return posts by those users ordered by newest first
         return Post.objects.filter(author__in=following_users).order_by('-created_at')
+
+class LikePostView(APIView):
+    def post(self, request, pk):
+        ...
+
