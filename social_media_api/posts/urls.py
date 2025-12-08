@@ -16,6 +16,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),   # your accounts
     path('api/', include('posts.urls')),
+    path('feed/', FeedView.as_view(), name='feed'),
+    path('posts/', include('posts.urls'))
 ]
 
 if settings.DEBUG:
@@ -23,5 +25,3 @@ if settings.DEBUG:
 
 # social_media_api/urls.py (add)
 path('api/', include('posts.urls')),
-
-feed/

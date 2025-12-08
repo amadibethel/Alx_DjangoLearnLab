@@ -4,6 +4,9 @@ from django.urls import path
 from .views import feed
 from .views import RegisterView, LoginView, ProfileView, FollowToggleView
 from rest_framework.authtoken.views import obtain_auth_token
+from .views import RegisterView, LoginView, ProfileView, FollowUserView, UnfollowUserView
+
+app_name = 'accounts'
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
