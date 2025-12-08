@@ -10,4 +10,6 @@ urlpatterns = [
     path('token-auth/', obtain_auth_token, name='token_auth'),# DRF built-in token endpoint (optional)
     path('profile/<str:username>/', ProfileView.as_view(), name='profile'),
     path('profile/<str:username>/follow/', FollowToggleView.as_view(), name='follow-toggle'),
+    path('follow/<int:user_id>/', FollowUserView.as_view(), name='follow'),
+    path('unfollow/<int:user_id>/', UnfollowUserView.as_view(), name='unfollow'),
 ]
