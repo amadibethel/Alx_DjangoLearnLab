@@ -23,3 +23,5 @@ if settings.DEBUG:
 
 # social_media_api/urls.py (add)
 path('api/', include('posts.urls')),
+
+feed/
