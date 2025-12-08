@@ -1,6 +1,7 @@
 # accounts/urls.py
 
 from django.urls import path
+from .views import feed
 from .views import RegisterView, LoginView, ProfileView, FollowToggleView
 from rest_framework.authtoken.views import obtain_auth_token
 
@@ -12,4 +13,8 @@ urlpatterns = [
     path('profile/<str:username>/follow/', FollowToggleView.as_view(), name='follow-toggle'),
     path('follow/<int:user_id>/', FollowUserView.as_view(), name='follow'),
     path('unfollow/<int:user_id>/', UnfollowUserView.as_view(), name='unfollow'),
+
+    path("feed/", feed, name="feed"),    
+    path("follow/<int:user_id>/", views.follow_user, name="follow-user"),
+    path("unfollow/<int:user_id>/", views.unfollow_user, name="unfollow-user"),
 ]
