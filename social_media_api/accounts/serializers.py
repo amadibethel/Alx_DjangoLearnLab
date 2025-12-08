@@ -24,13 +24,14 @@ class RegisterSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
     def create(self, validated_data):
-        password = validated_data.pop('password')
-        user = User(**validated_data)
-        user.set_password(password)
-        user.save()
-        # create token
-        Token.objects.create(user=user)
-        return user
+    password = validated_data.pop('password')
+    user = get_user_model().objects.create_user(
+        password=password,
+        **validated_data
+    )
+    Token.objects.create(user=user)
+    return user
+
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
